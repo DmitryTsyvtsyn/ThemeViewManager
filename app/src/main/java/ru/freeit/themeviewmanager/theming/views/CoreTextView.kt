@@ -6,10 +6,12 @@ import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.CoreThemeManager
 import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
 import ru.freeit.themeviewmanager.theming.colors.ColorAttribute
+import ru.freeit.themeviewmanager.theming.typeface.TypefaceAttribute
 
 open class CoreTextView @JvmOverloads constructor(
     ctx: Context,
-    private var textColor: ColorAttribute = ColorAttribute.primaryTextColor
+    private var textColor: ColorAttribute = ColorAttribute.primaryTextColor,
+    private var typeface: TypefaceAttribute = TypefaceAttribute.Title1
 ): AppCompatTextView(ctx) {
 
     private val themeManager: CoreThemeManager
@@ -36,11 +38,19 @@ open class CoreTextView @JvmOverloads constructor(
 
     protected open fun onThemeChanged(theme: CoreTheme) {
         setTextColor(theme.colors[textColor])
+
+        changeTypeface(typeface)
     }
 
     fun changeTextColor(color: ColorAttribute) {
         textColor = color
         setTextColor(themeManager.selected_theme.colors[color])
+    }
+
+    fun changeTypeface(typeface: TypefaceAttribute) {
+        val (typefacePath, fontSize) = themeManager.selected_theme.typefaces[typeface]
+        setTypeface(themeManager.typeface(typefacePath))
+        setTextSize(fontSize)
     }
 
 }

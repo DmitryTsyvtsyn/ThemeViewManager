@@ -6,10 +6,16 @@ import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
 
 class App : Application(), CoreThemeManagerProvider {
 
-    private val themeManager = CoreThemeManager()
+    private var themeManager: CoreThemeManager? = null
+
+    override fun onCreate() {
+        super.onCreate()
+
+        themeManager = CoreThemeManager(assets)
+    }
 
     override fun provide(): CoreThemeManager {
-        return themeManager
+        return requireNotNull(themeManager)
     }
 
 }
