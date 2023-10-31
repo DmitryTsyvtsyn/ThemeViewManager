@@ -3,7 +3,10 @@ package ru.freeit.themeviewmanager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
 import ru.freeit.themeviewmanager.theming.layout.CoreFrameLayout
@@ -32,6 +35,14 @@ class MainActivity : AppCompatActivity() {
         titleView.text = "Today is the best day!"
         titleView.layoutParams(frameLayoutParams().wrap().gravity(Gravity.CENTER))
         contentView.addView(titleView)
+
+        ViewCompat.setOnApplyWindowInsetsListener(contentView) { _, windowInsets ->
+            val systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            contentView.updatePadding(top = systemBarsInsets.top)
+
+            WindowInsetsCompat.CONSUMED
+        }
 
     }
 

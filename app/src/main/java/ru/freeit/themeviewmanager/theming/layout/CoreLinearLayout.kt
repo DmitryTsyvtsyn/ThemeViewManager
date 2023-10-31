@@ -1,18 +1,18 @@
 package ru.freeit.themeviewmanager.theming.layout
 
 import android.content.Context
-import android.widget.FrameLayout
+import android.widget.LinearLayout
 import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.CoreThemeManager
 import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
 import ru.freeit.themeviewmanager.theming.colors.ColorAttribute
 import ru.freeit.themeviewmanager.theming.shape.ShapeAttribute
 
-class CoreFrameLayout @JvmOverloads constructor(
+class CoreLinearLayout @JvmOverloads constructor(
     ctx: Context,
     private val backgroundColor: ColorAttribute = ColorAttribute.primaryBackgroundColor,
-    private val shape: ShapeAttribute = ShapeAttribute.small
-): FrameLayout(ctx) {
+    private val shape: ShapeAttribute = ShapeAttribute.none
+): LinearLayout(ctx) {
 
     private val onThemeChanged: (CoreTheme) -> Unit = { theme ->
         val backgroundDrawable = theme.shapes[shape].drawable(context)
