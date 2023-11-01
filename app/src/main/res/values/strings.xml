@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">themeviewmanager</string>
+    <string name="read_more">Read more</string>
+    <string name="repository_description">"A simple example of an Android app with a custom implementation of View themes "</string>
 </resources>

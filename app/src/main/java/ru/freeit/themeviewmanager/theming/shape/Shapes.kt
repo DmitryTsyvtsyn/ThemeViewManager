@@ -8,6 +8,7 @@ class Shapes(
         return when (attribute) {
             ShapeAttribute.none -> ShapeDrawableStrategy.None
             ShapeAttribute.small -> small
+            ShapeAttribute.maximum -> ShapeDrawableStrategy.Rounded(50f, 50f, 50f, 50f)
         }
     }
 

@@ -2,6 +2,8 @@ package ru.freeit.themeviewmanager.theming.colors
 
 enum class ColorAttribute {
     primaryColor,
+    primaryDarkColor,
     primaryBackgroundColor,
-    primaryTextColor
+    primaryTextColor,
+    colorOnPrimary
 }

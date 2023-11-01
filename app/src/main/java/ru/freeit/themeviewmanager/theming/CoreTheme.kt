@@ -8,7 +8,9 @@ import ru.freeit.themeviewmanager.theming.typeface.Typefaces
 enum class CoreTheme(
     val colors: Colors,
     val typefaces: Typefaces = Typefaces(
-        title1 = "sf_pro_rounded_medium.ttf" to 23f
+        title1 = "sf_pro_rounded_bold.ttf" to 23f,
+        caption1 = "sf_pro_rounded_medium.ttf" to 17f,
+        body1 = "sf_pro_rounded_regular.ttf" to 17f
     ),
     val shapes: Shapes = Shapes(
         small = ShapeDrawableStrategy.Rounded(8f, 8f, 8f, 8f)
@@ -18,16 +20,20 @@ enum class CoreTheme(
     LIGHT(
         colors = Colors(
             primaryColor = CoreColors.greenMedium,
+            primaryDarkColor = CoreColors.greenDark,
             primaryBackgroundColor = CoreColors.white,
-            primaryTextColor = CoreColors.black
+            primaryTextColor = CoreColors.black,
+            colorOnPrimary = CoreColors.white
         )
     ),
 
     DARK(
         colors = Colors(
             primaryColor = CoreColors.greenMedium,
+            primaryDarkColor = CoreColors.greenDark,
             primaryBackgroundColor = CoreColors.black,
-            primaryTextColor = CoreColors.white
+            primaryTextColor = CoreColors.white,
+            colorOnPrimary = CoreColors.white
         )
     )
 
