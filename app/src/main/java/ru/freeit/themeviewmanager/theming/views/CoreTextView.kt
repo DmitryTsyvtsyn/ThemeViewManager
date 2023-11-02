@@ -1,6 +1,7 @@
 package ru.freeit.themeviewmanager.theming.views
 
 import android.content.Context
+import android.content.res.ColorStateList
 import androidx.appcompat.widget.AppCompatTextView
 import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.CoreThemeManager
@@ -11,6 +12,7 @@ import ru.freeit.themeviewmanager.theming.typeface.TypefaceAttribute
 open class CoreTextView @JvmOverloads constructor(
     ctx: Context,
     private var textColor: ColorAttribute = ColorAttribute.primaryTextColor,
+    private val disabledTextColor: ColorAttribute = ColorAttribute.disabledTextColor,
     private var typeface: TypefaceAttribute = TypefaceAttribute.Title1
 ): AppCompatTextView(ctx) {
 
@@ -37,14 +39,23 @@ open class CoreTextView @JvmOverloads constructor(
     }
 
     protected open fun onThemeChanged(theme: CoreTheme) {
-        setTextColor(theme.colors[textColor])
-
+        changeTextColor(textColor)
         changeTypeface(typeface)
     }
 
     fun changeTextColor(color: ColorAttribute) {
+        val currentTheme = themeManager.selected_theme
         textColor = color
-        setTextColor(themeManager.selected_theme.colors[color])
+        setTextColor(ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_enabled),
+                intArrayOf(android.R.attr.state_enabled)
+            ),
+            intArrayOf(
+                currentTheme.colors[disabledTextColor],
+                currentTheme.colors[color]
+            )
+        ))
     }
 
     fun changeTypeface(typeface: TypefaceAttribute) {

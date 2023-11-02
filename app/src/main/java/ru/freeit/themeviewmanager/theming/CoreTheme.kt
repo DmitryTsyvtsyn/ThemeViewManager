@@ -23,7 +23,9 @@ enum class CoreTheme(
             primaryDarkColor = CoreColors.greenDark,
             primaryBackgroundColor = CoreColors.white,
             primaryTextColor = CoreColors.black,
-            colorOnPrimary = CoreColors.white
+            colorOnPrimary = CoreColors.white,
+            disabledTextColor = CoreColors.grayMedium,
+            disabledBackgroundColor = CoreColors.grayLight
         )
     ),
 
@@ -33,7 +35,9 @@ enum class CoreTheme(
             primaryDarkColor = CoreColors.greenDark,
             primaryBackgroundColor = CoreColors.black,
             primaryTextColor = CoreColors.white,
-            colorOnPrimary = CoreColors.white
+            colorOnPrimary = CoreColors.white,
+            disabledTextColor = CoreColors.grayLight,
+            disabledBackgroundColor = CoreColors.grayMedium
         )
     )
 

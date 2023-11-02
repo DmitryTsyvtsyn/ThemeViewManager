@@ -3,7 +3,14 @@ package ru.freeit.themeviewmanager.theming.views
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
+import android.graphics.drawable.StateListDrawable
+import android.os.Build
 import android.view.Gravity
+import android.view.MotionEvent
+import android.view.PointerIcon
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.Button
 import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.colors.ColorAttribute
 import ru.freeit.themeviewmanager.theming.extensions.dp
@@ -15,10 +22,12 @@ class CoreButton @JvmOverloads constructor(
     ctx: Context,
     private val shape: ShapeAttribute = ShapeAttribute.small,
     private val backgroundColor: ColorAttribute = ColorAttribute.primaryColor,
+    private val disabledBackgroundColor: ColorAttribute = ColorAttribute.disabledBackgroundColor,
+    disabledTextColor: ColorAttribute = ColorAttribute.disabledTextColor,
     private val rippleColor: ColorAttribute = ColorAttribute.primaryDarkColor,
     textColor: ColorAttribute = ColorAttribute.colorOnPrimary,
     typeface: TypefaceAttribute = TypefaceAttribute.Caption1
-) : CoreTextView(ctx, textColor = textColor, typeface = typeface) {
+) : CoreTextView(ctx, textColor = textColor, disabledTextColor = disabledTextColor, typeface = typeface) {
 
     init {
         isClickable = true
@@ -43,9 +52,39 @@ class CoreButton @JvmOverloads constructor(
         val contentDrawable = theme.shapes[shape].drawable(context)
         contentDrawable.setTint(theme.colors[backgroundColor])
 
+        val disabledContentDrawable = theme.shapes[shape].drawable(context)
+        disabledContentDrawable.setTint(theme.colors[disabledBackgroundColor])
+
+        val stateListDrawable = StateListDrawable()
+        stateListDrawable.addState(intArrayOf(android.R.attr.state_enabled), contentDrawable)
+        stateListDrawable.addState(intArrayOf(-android.R.attr.state_enabled), disabledContentDrawable)
+
         val color = ColorStateList.valueOf(theme.colors[rippleColor])
 
-        background = RippleDrawable(color, contentDrawable, null)
+        background = RippleDrawable(color, stateListDrawable, null)
+    }
+
+    override fun onInitializeAccessibilityEvent(event: AccessibilityEvent?) {
+        super.onInitializeAccessibilityEvent(event)
+        event?.className = Button::class.java.name
+    }
+
+    override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo?) {
+        super.onInitializeAccessibilityNodeInfo(info)
+        info?.className = Button::class.java.name
+    }
+
+    override fun getAccessibilityClassName(): CharSequence {
+        return Button::class.java.name
+    }
+
+    override fun onResolvePointerIcon(event: MotionEvent?, pointerIndex: Int): PointerIcon {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (pointerIcon == null && isClickable && isEnabled) {
+                return PointerIcon.getSystemIcon(context, PointerIcon.TYPE_HAND)
+            }
+        }
+        return super.onResolvePointerIcon(event, pointerIndex)
     }
 
 }

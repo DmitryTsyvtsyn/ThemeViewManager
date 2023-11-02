@@ -23,10 +23,9 @@ class CoreThemeManager(private val assetManager: AssetManager) {
         listeners.remove(listener)
     }
 
-    fun toggleTheme() : CoreTheme {
+    fun toggleTheme() {
         currentTheme = if (currentTheme == CoreTheme.LIGHT) CoreTheme.DARK else CoreTheme.LIGHT
         listeners.forEach { listener -> listener.invoke(currentTheme) }
-        return currentTheme
     }
 
     fun typeface(path: String): Typeface {

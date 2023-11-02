@@ -11,12 +11,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
 import ru.freeit.themeviewmanager.theming.extensions.dp
@@ -33,9 +27,6 @@ import ru.freeit.themeviewmanager.theming.views.CoreImageButtonView
 import ru.freeit.themeviewmanager.theming.views.CoreTextView
 
 class MainActivity : AppCompatActivity() {
-
-    private val job = Job()
-    private val activityCoroutineScope = CoroutineScope(job + Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,27 +51,29 @@ class MainActivity : AppCompatActivity() {
         toolbarTitleView.layoutParams(frameLayoutParams().wrap().gravity(Gravity.CENTER).marginStart(toolbarTitleMargin).marginEnd(toolbarTitleMargin))
         toolbarView.addView(toolbarTitleView)
 
-        val currentTheme = MutableStateFlow(CoreTheme.LIGHT)
-
         val menuButtonView = CoreImageButtonView(this)
         menuButtonView.padding(dp(8))
         menuButtonView.setImageResource(R.drawable.ic_light_mode)
         menuButtonView.layoutParams(frameLayoutParams().width(dp(menuButtonSize)).height(dp(menuButtonSize)).gravity(Gravity.END).marginEnd(dp(menuButtonMargin)))
-        val themeManager = (applicationContext as CoreThemeManagerProvider).provide()
-        menuButtonView.setOnClickListener {
-            currentTheme.value = themeManager.toggleTheme()
-        }
         toolbarView.addView(menuButtonView)
 
-        activityCoroutineScope.launch {
-            currentTheme.collectLatest {
-                updateSystemBars(it)
-                val drawableResource = when(it) {
-                    CoreTheme.LIGHT -> R.drawable.ic_dark_mode
-                    CoreTheme.DARK -> R.drawable.ic_light_mode
-                }
-                menuButtonView.setImageResource(drawableResource)
+        val themeManager = (applicationContext as CoreThemeManagerProvider).provide()
+
+        fun updateTheme() {
+            val currentTheme = themeManager.selected_theme
+            updateSystemBars(currentTheme)
+            val drawableResource = when(currentTheme) {
+                CoreTheme.LIGHT -> R.drawable.ic_dark_mode
+                CoreTheme.DARK -> R.drawable.ic_light_mode
             }
+            menuButtonView.setImageResource(drawableResource)
+        }
+
+        updateTheme()
+
+        menuButtonView.setOnClickListener {
+            themeManager.toggleTheme()
+            updateTheme()
         }
 
         val contentTextView = CoreTextView(this, typeface = TypefaceAttribute.Body1)
@@ -117,11 +110,6 @@ class MainActivity : AppCompatActivity() {
             WindowInsetsCompat.CONSUMED
         }
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
     }
 
     private fun updateSystemBars(theme: CoreTheme) {

@@ -5,5 +5,7 @@ enum class ColorAttribute {
     primaryDarkColor,
     primaryBackgroundColor,
     primaryTextColor,
-    colorOnPrimary
+    colorOnPrimary,
+    disabledTextColor,
+    disabledBackgroundColor
 }
