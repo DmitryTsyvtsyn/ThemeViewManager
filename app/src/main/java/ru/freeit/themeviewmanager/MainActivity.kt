@@ -17,10 +17,10 @@ import ru.freeit.themeviewmanager.theming.extensions.dp
 import ru.freeit.themeviewmanager.theming.extensions.padding
 import ru.freeit.themeviewmanager.theming.layout.CoreFrameLayout
 import ru.freeit.themeviewmanager.theming.layout.CoreLinearLayout
-import ru.freeit.themeviewmanager.theming.layout.extensions.frameLayoutParams
-import ru.freeit.themeviewmanager.theming.layout.extensions.layoutParams
-import ru.freeit.themeviewmanager.theming.layout.extensions.linearLayoutParams
-import ru.freeit.themeviewmanager.theming.layout.extensions.viewGroupLayoutParams
+import ru.freeit.themeviewmanager.theming.extensions.frameLayoutParams
+import ru.freeit.themeviewmanager.theming.extensions.layoutParams
+import ru.freeit.themeviewmanager.theming.extensions.linearLayoutParams
+import ru.freeit.themeviewmanager.theming.extensions.viewGroupLayoutParams
 import ru.freeit.themeviewmanager.theming.typeface.TypefaceAttribute
 import ru.freeit.themeviewmanager.theming.views.CoreButton
 import ru.freeit.themeviewmanager.theming.views.CoreImageButtonView

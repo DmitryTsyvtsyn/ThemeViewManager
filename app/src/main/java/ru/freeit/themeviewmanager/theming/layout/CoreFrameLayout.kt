@@ -10,11 +10,11 @@ import ru.freeit.themeviewmanager.theming.shape.ShapeAttribute
 
 class CoreFrameLayout @JvmOverloads constructor(
     ctx: Context,
-    private val backgroundColor: ColorAttribute = ColorAttribute.primaryBackgroundColor,
-    private val shape: ShapeAttribute = ShapeAttribute.small
+    private val backgroundColor: ColorAttribute = ColorAttribute.PrimaryBackgroundColor,
+    private val shape: ShapeAttribute = ShapeAttribute.Small
 ): FrameLayout(ctx) {
 
-    private val onThemeChanged: (CoreTheme) -> Unit = { theme ->
+    private fun onThemeChanged(theme: CoreTheme) {
         val backgroundDrawable = theme.shapes[shape].drawable(context)
         backgroundDrawable.setTint(theme.colors[backgroundColor])
         background = backgroundDrawable
@@ -32,12 +32,12 @@ class CoreFrameLayout @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        themeManager.listenForThemeChanges(onThemeChanged)
+        themeManager.listenForThemeChanges(::onThemeChanged)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        themeManager.doNotListenForThemeChanges(onThemeChanged)
+        themeManager.doNotListenForThemeChanges(::onThemeChanged)
     }
 
 }

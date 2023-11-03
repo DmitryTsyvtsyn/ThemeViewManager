@@ -20,12 +20,12 @@ import ru.freeit.themeviewmanager.theming.typeface.TypefaceAttribute
 
 class CoreButton @JvmOverloads constructor(
     ctx: Context,
-    private val shape: ShapeAttribute = ShapeAttribute.small,
-    private val backgroundColor: ColorAttribute = ColorAttribute.primaryColor,
-    private val disabledBackgroundColor: ColorAttribute = ColorAttribute.disabledBackgroundColor,
-    disabledTextColor: ColorAttribute = ColorAttribute.disabledTextColor,
-    private val rippleColor: ColorAttribute = ColorAttribute.primaryDarkColor,
-    textColor: ColorAttribute = ColorAttribute.colorOnPrimary,
+    private val shape: ShapeAttribute = ShapeAttribute.Small,
+    private val backgroundColor: ColorAttribute = ColorAttribute.PrimaryColor,
+    private val disabledBackgroundColor: ColorAttribute = ColorAttribute.DisabledBackgroundColor,
+    disabledTextColor: ColorAttribute = ColorAttribute.DisabledTextColor,
+    private val rippleColor: ColorAttribute = ColorAttribute.PrimaryDarkColor,
+    textColor: ColorAttribute = ColorAttribute.ColorOnPrimary,
     typeface: TypefaceAttribute = TypefaceAttribute.Caption1
 ) : CoreTextView(ctx, textColor = textColor, disabledTextColor = disabledTextColor, typeface = typeface) {
 

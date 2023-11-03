@@ -9,7 +9,7 @@ import ru.freeit.themeviewmanager.theming.colors.ColorAttribute
 
 open class CoreImageView @JvmOverloads constructor(
     ctx: Context,
-    private var tintColor: ColorAttribute = ColorAttribute.primaryTextColor
+    private var tintColor: ColorAttribute = ColorAttribute.PrimaryTextColor
 ): AppCompatImageView(ctx) {
 
     private val themeManager: CoreThemeManager
@@ -33,10 +33,14 @@ open class CoreImageView @JvmOverloads constructor(
     }
 
     protected open fun onThemeChanged(theme: CoreTheme) {
+        if (tintColor is ColorAttribute.Transparent) return
+
         setColorFilter(theme.colors[tintColor])
     }
 
     fun changeTint(color: ColorAttribute) {
+        if (color is ColorAttribute.Transparent) return
+
         tintColor = color
         setColorFilter(themeManager.selected_theme.colors[color])
     }

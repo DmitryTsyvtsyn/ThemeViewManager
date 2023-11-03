@@ -11,10 +11,10 @@ import ru.freeit.themeviewmanager.theming.shape.ShapeAttribute
 
 class CoreImageButtonView @JvmOverloads constructor(
     ctx: Context,
-    private val shape: ShapeAttribute = ShapeAttribute.maximum,
-    private val rippleColor: ColorAttribute = ColorAttribute.primaryColor,
-    private val backgroundColor: ColorAttribute? = null,
-    tintColor: ColorAttribute = ColorAttribute.primaryTextColor
+    private val shape: ShapeAttribute = ShapeAttribute.Maximum,
+    private val rippleColor: ColorAttribute = ColorAttribute.PrimaryColor,
+    private val backgroundColor: ColorAttribute = ColorAttribute.Transparent,
+    tintColor: ColorAttribute = ColorAttribute.PrimaryTextColor
 ): CoreImageView(ctx, tintColor = tintColor) {
 
     init {
@@ -27,13 +27,8 @@ class CoreImageButtonView @JvmOverloads constructor(
 
         val rippleColor = ColorStateList.valueOf(theme.colors[rippleColor])
 
-        val contentDrawable = if (backgroundColor != null) {
-            val drawable = theme.shapes[shape].drawable(context)
-            drawable.setTint(theme.colors[backgroundColor])
-            drawable
-        } else {
-            null
-        }
+        val contentDrawable = theme.shapes[shape].drawable(context)
+        contentDrawable.setTint(theme.colors[backgroundColor])
 
         val maskDrawable = theme.shapes[shape].drawable(context)
         maskDrawable.setTint(CoreColors.white.withAlpha(0.7f))

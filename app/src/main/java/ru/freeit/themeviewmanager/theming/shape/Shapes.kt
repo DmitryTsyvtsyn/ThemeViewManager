@@ -6,9 +6,9 @@ class Shapes(
 
     operator fun get(attribute: ShapeAttribute): ShapeDrawableStrategy {
         return when (attribute) {
-            ShapeAttribute.none -> ShapeDrawableStrategy.None
-            ShapeAttribute.small -> small
-            ShapeAttribute.maximum -> ShapeDrawableStrategy.Rounded(50f, 50f, 50f, 50f)
+            ShapeAttribute.None -> ShapeDrawableStrategy.None
+            ShapeAttribute.Small -> small
+            ShapeAttribute.Maximum -> ShapeDrawableStrategy.Rounded(50f, 50f, 50f, 50f)
         }
     }
 

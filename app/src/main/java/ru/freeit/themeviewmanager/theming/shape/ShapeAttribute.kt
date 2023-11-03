@@ -1,5 +1,5 @@
 package ru.freeit.themeviewmanager.theming.shape
 
 enum class ShapeAttribute {
-    none, small, maximum
+    None, Small, Maximum
 }

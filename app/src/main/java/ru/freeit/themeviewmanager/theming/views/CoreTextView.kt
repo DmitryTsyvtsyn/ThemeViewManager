@@ -11,10 +11,12 @@ import ru.freeit.themeviewmanager.theming.typeface.TypefaceAttribute
 
 open class CoreTextView @JvmOverloads constructor(
     ctx: Context,
-    private var textColor: ColorAttribute = ColorAttribute.primaryTextColor,
-    private val disabledTextColor: ColorAttribute = ColorAttribute.disabledTextColor,
+    private var textColor: ColorAttribute = ColorAttribute.PrimaryTextColor,
+    private val disabledTextColor: ColorAttribute = ColorAttribute.DisabledTextColor,
     private var typeface: TypefaceAttribute = TypefaceAttribute.Title1
 ): AppCompatTextView(ctx) {
+
+    private var cachedFontSize: Float = -1f
 
     protected val themeManager: CoreThemeManager
 
@@ -59,9 +61,16 @@ open class CoreTextView @JvmOverloads constructor(
     }
 
     fun changeTypeface(typeface: TypefaceAttribute) {
+        this.typeface = typeface
         val (typefacePath, fontSize) = themeManager.selected_theme.typefaces[typeface]
         setTypeface(themeManager.typeface(typefacePath))
-        setTextSize(fontSize)
+
+        super.setTextSize(if (cachedFontSize > 0) cachedFontSize else fontSize)
+    }
+
+    override fun setTextSize(size: Float) {
+        cachedFontSize = size
+        super.setTextSize(size)
     }
 
 }

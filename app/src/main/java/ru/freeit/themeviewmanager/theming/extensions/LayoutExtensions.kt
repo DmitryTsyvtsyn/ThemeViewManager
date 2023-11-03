@@ -1,4 +1,4 @@
-package ru.freeit.themeviewmanager.theming.layout.extensions
+package ru.freeit.themeviewmanager.theming.extensions
 
 import android.view.View
 import ru.freeit.themeviewmanager.theming.layout.params.AbstractLP

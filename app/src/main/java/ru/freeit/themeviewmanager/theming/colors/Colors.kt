@@ -1,5 +1,7 @@
 package ru.freeit.themeviewmanager.theming.colors
 
+import ru.freeit.themeviewmanager.theming.CoreColors
+
 class Colors(
     private val primaryColor: Int,
     private val primaryDarkColor: Int,
@@ -10,15 +12,17 @@ class Colors(
     private val disabledBackgroundColor: Int
 ) {
 
-    operator fun get(type: ColorAttribute): Int {
-        return when(type) {
-            ColorAttribute.primaryColor -> primaryColor
-            ColorAttribute.primaryDarkColor -> primaryDarkColor
-            ColorAttribute.primaryBackgroundColor -> primaryBackgroundColor
-            ColorAttribute.primaryTextColor -> primaryTextColor
-            ColorAttribute.colorOnPrimary -> colorOnPrimary
-            ColorAttribute.disabledTextColor -> disabledTextColor
-            ColorAttribute.disabledBackgroundColor -> disabledBackgroundColor
+    operator fun get(attribute: ColorAttribute): Int {
+        return when(attribute) {
+            is ColorAttribute.PrimaryColor -> primaryColor
+            is ColorAttribute.PrimaryDarkColor -> primaryDarkColor
+            is ColorAttribute.PrimaryBackgroundColor -> primaryBackgroundColor
+            is ColorAttribute.PrimaryTextColor -> primaryTextColor
+            is ColorAttribute.ColorOnPrimary -> colorOnPrimary
+            is ColorAttribute.DisabledTextColor -> disabledTextColor
+            is ColorAttribute.DisabledBackgroundColor -> disabledBackgroundColor
+            is ColorAttribute.Transparent -> CoreColors.transparent
+            is ColorAttribute.HardcodedColor -> attribute.color
         }
     }
 
