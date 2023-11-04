@@ -7,9 +7,9 @@ A simple example of an Android app with a custom implementation of View themes.
 
 ### Description
 
-This example doesn't contain xml layouts and Jetpack Compose code, only descendants of different View (Button, TextView, e.t.c).
+This example doesn't contain xml layouts and Jetpack Compose library, only descendants of different View classes (ImageView, TextView, e.t.c).
 
-Let's check the Button code for example:
+Let's check the CoreButton code for example:
 
     class CoreButton @JvmOverloads constructor(
         ctx: Context,
@@ -82,15 +82,117 @@ Let's check the Button code for example:
     
     }
 
-As you can see in the <code>onAttachedToWindow</code> method we subscribe to the theme changes and receive parameters such as color by attributes. A similar principle is implemented in the [Telegram app](https://github.com/DrKLO/Telegram)
+As you can see the <code>onAttachedToWindow</code> method subscribes to the theme changes and receive parameters such as color by attributes. A similar principle is implemented in the [Telegram app](https://github.com/DrKLO/Telegram)
 
 Also a little logic was added for [Accessibility](https://developer.android.com/guide/topics/ui/accessibility) since the CoreButton doesn't inherit from the AppCompatButton.
 
+<code>themeManager</code> is a base class that contains subscriptions and notifies Views when the theme changes:
 
+    class CoreThemeManager(private val assetManager: AssetManager) {
+    
+        private val listeners = mutableListOf<(CoreTheme) -> Unit>()
+    
+        private var currentTheme = CoreTheme.LIGHT
+    
+        val selected_theme: CoreTheme
+            get() = currentTheme
+    
+        fun listenForThemeChanges(listener: (CoreTheme) -> Unit) {
+            listeners.add(listener)
+            listener.invoke(currentTheme)
+        }
+    
+        fun doNotListenForThemeChanges(listener: (CoreTheme) -> Unit) {
+            listeners.remove(listener)
+        }
+    
+        fun toggleTheme() {
+            currentTheme = if (currentTheme == CoreTheme.LIGHT) CoreTheme.DARK else CoreTheme.LIGHT
+            listeners.forEach { listener -> listener.invoke(currentTheme) }
+        }
+    
+        ...
+    
+    }
 
+The implementation of the theme is quite simple:
 
+    enum class CoreTheme(
+        val colors: Colors,
+        val typefaces: Typefaces = Typefaces(
+            title1 = "sf_pro_rounded_bold.ttf" to 23f,
+            caption1 = "sf_pro_rounded_medium.ttf" to 17f,
+            body1 = "sf_pro_rounded_regular.ttf" to 17f
+        ),
+        val shapes: Shapes = Shapes(
+            small = ShapeDrawableStrategy.Rounded(8f, 8f, 8f, 8f)
+        )
+    ) {
+    
+        LIGHT(
+            colors = Colors(
+                primaryColor = CoreColors.greenMedium,
+                primaryDarkColor = CoreColors.greenDark,
+                primaryBackgroundColor = CoreColors.white,
+                primaryTextColor = CoreColors.black,
+                colorOnPrimary = CoreColors.white,
+                disabledTextColor = CoreColors.grayMedium,
+                disabledBackgroundColor = CoreColors.grayLight
+            )
+        ),
+    
+        DARK(
+            colors = Colors(
+                primaryColor = CoreColors.greenMedium,
+                primaryDarkColor = CoreColors.greenDark,
+                primaryBackgroundColor = CoreColors.black,
+                primaryTextColor = CoreColors.white,
+                colorOnPrimary = CoreColors.white,
+                disabledTextColor = CoreColors.grayLight,
+                disabledBackgroundColor = CoreColors.grayMedium
+            )
+        )
+    
+    }
 
+As you have already seen obtaining color in a View occurs as follows:
 
+    val backgroundColor = theme.colors[backgroundColor]
+    val disabledBackgroundColor = theme.colors[disabledBackgroundColor]
+
+This trick is quite simple to implement:
+
+    class Colors(
+        private val primaryColor: Int,
+        private val primaryDarkColor: Int,
+        private val primaryBackgroundColor: Int,
+        private val primaryTextColor: Int,
+        private val colorOnPrimary: Int,
+        private val disabledTextColor: Int,
+        private val disabledBackgroundColor: Int
+    ) {
+    
+        operator fun get(attribute: ColorAttribute): Int {
+            return when(attribute) {
+                is ColorAttribute.PrimaryColor -> primaryColor
+                is ColorAttribute.PrimaryDarkColor -> primaryDarkColor
+                is ColorAttribute.PrimaryBackgroundColor -> primaryBackgroundColor
+                is ColorAttribute.PrimaryTextColor -> primaryTextColor
+                is ColorAttribute.ColorOnPrimary -> colorOnPrimary
+                is ColorAttribute.DisabledTextColor -> disabledTextColor
+                is ColorAttribute.DisabledBackgroundColor -> disabledBackgroundColor
+                is ColorAttribute.Transparent -> CoreColors.transparent
+                is ColorAttribute.HardcodedColor -> attribute.color
+            }
+        }
+    
+    }
+
+You can add as many attributes as you want.
+
+I do not describe all my code, since it is already clear and simple, study and share your knowledge with others!
+
+If you have any questions write: [Telegram](https://t.me/rwcwuwr), [Gmail](mailto:dmitry.kind.2@gmail.com)
 
 
 
