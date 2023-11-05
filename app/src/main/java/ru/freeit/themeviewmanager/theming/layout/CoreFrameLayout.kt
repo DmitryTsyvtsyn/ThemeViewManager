@@ -8,10 +8,10 @@ import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
 import ru.freeit.themeviewmanager.theming.colors.ColorAttribute
 import ru.freeit.themeviewmanager.theming.shape.ShapeAttribute
 
-class CoreFrameLayout @JvmOverloads constructor(
+open class CoreFrameLayout @JvmOverloads constructor(
     ctx: Context,
     private val backgroundColor: ColorAttribute = ColorAttribute.PrimaryBackgroundColor,
-    private val shape: ShapeAttribute = ShapeAttribute.Small
+    private val shape: ShapeAttribute = ShapeAttribute.None
 ): FrameLayout(ctx) {
 
     private fun onThemeChanged(theme: CoreTheme) {
@@ -20,7 +20,7 @@ class CoreFrameLayout @JvmOverloads constructor(
         background = backgroundDrawable
     }
 
-    private val themeManager: CoreThemeManager
+    protected val themeManager: CoreThemeManager
 
     init {
         require(context.applicationContext is CoreThemeManagerProvider) {

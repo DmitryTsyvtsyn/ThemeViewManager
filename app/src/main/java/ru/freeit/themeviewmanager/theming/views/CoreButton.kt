@@ -20,7 +20,7 @@ import ru.freeit.themeviewmanager.theming.typeface.TypefaceAttribute
 
 class CoreButton @JvmOverloads constructor(
     ctx: Context,
-    private val shape: ShapeAttribute = ShapeAttribute.Small,
+    private val shape: ShapeAttribute = ShapeAttribute.Button,
     private val backgroundColor: ColorAttribute = ColorAttribute.PrimaryColor,
     private val disabledBackgroundColor: ColorAttribute = ColorAttribute.DisabledBackgroundColor,
     disabledTextColor: ColorAttribute = ColorAttribute.DisabledTextColor,

@@ -13,7 +13,8 @@ enum class CoreTheme(
         body1 = "sf_pro_rounded_regular.ttf" to 17f
     ),
     val shapes: Shapes = Shapes(
-        small = ShapeDrawableStrategy.Rounded(8f, 8f, 8f, 8f)
+        button = ShapeDrawableStrategy.Rounded(8f, 8f, 8f, 8f),
+        radioButton = ShapeDrawableStrategy.StrokeRounded(4, 12f, 12f, 12f, 12f)
     )
 ) {
 

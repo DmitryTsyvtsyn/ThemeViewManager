@@ -11,7 +11,7 @@ import ru.freeit.themeviewmanager.theming.shape.ShapeAttribute
 
 class CoreImageButtonView @JvmOverloads constructor(
     ctx: Context,
-    private val shape: ShapeAttribute = ShapeAttribute.Maximum,
+    private val shape: ShapeAttribute = ShapeAttribute.Rounded,
     private val rippleColor: ColorAttribute = ColorAttribute.PrimaryColor,
     private val backgroundColor: ColorAttribute = ColorAttribute.Transparent,
     tintColor: ColorAttribute = ColorAttribute.PrimaryTextColor

@@ -1,14 +1,16 @@
 package ru.freeit.themeviewmanager.theming.shape
 
 class Shapes(
-    val small: ShapeDrawableStrategy
+    val button: ShapeDrawableStrategy,
+    val radioButton: ShapeDrawableStrategy
 ) {
 
     operator fun get(attribute: ShapeAttribute): ShapeDrawableStrategy {
         return when (attribute) {
             ShapeAttribute.None -> ShapeDrawableStrategy.None
-            ShapeAttribute.Small -> small
-            ShapeAttribute.Maximum -> ShapeDrawableStrategy.Rounded(50f, 50f, 50f, 50f)
+            ShapeAttribute.Button -> button
+            ShapeAttribute.RadioButton -> radioButton
+            ShapeAttribute.Rounded -> ShapeDrawableStrategy.Rounded(50f, 50f, 50f, 50f)
         }
     }
 

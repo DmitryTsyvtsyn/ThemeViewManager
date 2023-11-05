@@ -2,11 +2,10 @@ package ru.freeit.themeviewmanager
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,17 +13,16 @@ import androidx.core.view.updatePadding
 import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
 import ru.freeit.themeviewmanager.theming.extensions.dp
-import ru.freeit.themeviewmanager.theming.extensions.padding
-import ru.freeit.themeviewmanager.theming.layout.CoreFrameLayout
-import ru.freeit.themeviewmanager.theming.layout.CoreLinearLayout
 import ru.freeit.themeviewmanager.theming.extensions.frameLayoutParams
 import ru.freeit.themeviewmanager.theming.extensions.layoutParams
 import ru.freeit.themeviewmanager.theming.extensions.linearLayoutParams
 import ru.freeit.themeviewmanager.theming.extensions.viewGroupLayoutParams
+import ru.freeit.themeviewmanager.theming.layout.CoreFrameLayout
+import ru.freeit.themeviewmanager.theming.layout.CoreLinearLayout
 import ru.freeit.themeviewmanager.theming.typeface.TypefaceAttribute
 import ru.freeit.themeviewmanager.theming.views.CoreButton
-import ru.freeit.themeviewmanager.theming.views.CoreImageButtonView
 import ru.freeit.themeviewmanager.theming.views.CoreTextView
+import ru.freeit.themeviewmanager.theming.views.CoreToolbarView
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,29 +31,19 @@ class MainActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        val rootView = CoreFrameLayout(this)
+        rootView.layoutParams(viewGroupLayoutParams().match())
+
         val contentView = CoreLinearLayout(this)
         contentView.orientation = LinearLayout.VERTICAL
-        contentView.layoutParams(viewGroupLayoutParams().match())
-        setContentView(contentView)
+        contentView.layoutParams(frameLayoutParams().match())
+        rootView.addView(contentView)
+        setContentView(rootView)
 
-        val toolbarView = CoreFrameLayout(this)
+        val toolbarView = CoreToolbarView(this)
+        toolbarView.changeTitle(getString(R.string.app_name))
         toolbarView.layoutParams(linearLayoutParams().matchWidth().wrapHeight())
         contentView.addView(toolbarView)
-
-        val menuButtonSize = 40
-        val menuButtonMargin = 8
-
-        val toolbarTitleMargin = menuButtonSize + menuButtonMargin * 2
-        val toolbarTitleView = CoreTextView(this)
-        toolbarTitleView.setText(R.string.app_name)
-        toolbarTitleView.layoutParams(frameLayoutParams().wrap().gravity(Gravity.CENTER).marginStart(toolbarTitleMargin).marginEnd(toolbarTitleMargin))
-        toolbarView.addView(toolbarTitleView)
-
-        val menuButtonView = CoreImageButtonView(this)
-        menuButtonView.padding(dp(8))
-        menuButtonView.setImageResource(R.drawable.ic_light_mode)
-        menuButtonView.layoutParams(frameLayoutParams().width(dp(menuButtonSize)).height(dp(menuButtonSize)).gravity(Gravity.END).marginEnd(dp(menuButtonMargin)))
-        toolbarView.addView(menuButtonView)
 
         val themeManager = (applicationContext as CoreThemeManagerProvider).provide()
 
@@ -66,12 +54,12 @@ class MainActivity : AppCompatActivity() {
                 CoreTheme.LIGHT -> R.drawable.ic_dark_mode
                 CoreTheme.DARK -> R.drawable.ic_light_mode
             }
-            menuButtonView.setImageResource(drawableResource)
+            if (drawableResource > 0) toolbarView.changeMenuImageResource(drawableResource)
         }
 
         updateTheme()
 
-        menuButtonView.setOnClickListener {
+        toolbarView.setOnMenuClickListener {
             themeManager.toggleTheme()
             updateTheme()
         }
@@ -102,10 +90,10 @@ class MainActivity : AppCompatActivity() {
         }
         contentView.addView(contentButtonView)
 
-        ViewCompat.setOnApplyWindowInsetsListener(contentView) { _, windowInsets ->
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { _, windowInsets ->
             val systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-            contentView.updatePadding(top = systemBarsInsets.top, bottom = systemBarsInsets.bottom)
+            rootView.updatePadding(top = systemBarsInsets.top, bottom = systemBarsInsets.bottom)
 
             WindowInsetsCompat.CONSUMED
         }
