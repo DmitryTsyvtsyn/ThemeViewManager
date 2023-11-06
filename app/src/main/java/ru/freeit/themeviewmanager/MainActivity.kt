@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -25,6 +26,8 @@ import ru.freeit.themeviewmanager.theming.views.CoreTextView
 import ru.freeit.themeviewmanager.theming.views.CoreToolbarView
 
 class MainActivity : AppCompatActivity() {
+
+    private var isThemeEditorScreenOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +54,8 @@ class MainActivity : AppCompatActivity() {
             val currentTheme = themeManager.selected_theme
             updateSystemBars(currentTheme)
             val drawableResource = when(currentTheme) {
-                CoreTheme.LIGHT -> R.drawable.ic_dark_mode
-                CoreTheme.DARK -> R.drawable.ic_light_mode
+                is CoreTheme.Light -> R.drawable.ic_dark_mode
+                is CoreTheme.Dark -> R.drawable.ic_light_mode
             }
             if (drawableResource > 0) toolbarView.changeMenuImageResource(drawableResource)
         }
@@ -90,6 +93,47 @@ class MainActivity : AppCompatActivity() {
         }
         contentView.addView(contentButtonView)
 
+        fun openThemeEditorScreen(isAnimationEnabled: Boolean = true, hasEndedAnimation: () -> Unit = {}) {
+            val bottomSheet = ThemeEditorScreen(this, isAnimationEnabled, hasEndedAnimation)
+            bottomSheet.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: View) {
+                    isThemeEditorScreenOpened = true
+                }
+
+                override fun onViewDetachedFromWindow(v: View) {
+                    isThemeEditorScreenOpened = false
+                }
+            })
+            bottomSheet.layoutParams(frameLayoutParams().match())
+            rootView.addView(bottomSheet)
+
+            onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    rootView.removeView(bottomSheet)
+                    isEnabled = false
+                }
+            })
+        }
+
+        val customizeThemeButton = CoreButton(this)
+        customizeThemeButton.text = getString(R.string.customize_current_theme)
+        customizeThemeButton.layoutParams(linearLayoutParams().matchWidth().wrapHeight().marginStart(dp(16))
+            .marginEnd(dp(16)).marginBottom(dp(8)))
+        customizeThemeButton.setOnClickListener {
+            customizeThemeButton.isEnabled = false
+
+            openThemeEditorScreen(hasEndedAnimation = {
+                customizeThemeButton.isEnabled = true
+            })
+        }
+        contentView.addView(customizeThemeButton)
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(theme_editor_screen_opened_key, false)) {
+                openThemeEditorScreen(isAnimationEnabled = false)
+            }
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { _, windowInsets ->
             val systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
@@ -100,11 +144,20 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(theme_editor_screen_opened_key, isThemeEditorScreenOpened)
+    }
+
     private fun updateSystemBars(theme: CoreTheme) {
-        val isDarkMode = theme == CoreTheme.DARK
+        val isDarkMode = theme is CoreTheme.Dark
         val insetsController = WindowCompat.getInsetsController(window, window.decorView)
         insetsController.isAppearanceLightStatusBars = !isDarkMode
         insetsController.isAppearanceLightNavigationBars = !isDarkMode
+    }
+
+    private companion object {
+        const val theme_editor_screen_opened_key = "theme_editor_screen_opened_key"
     }
 
 }

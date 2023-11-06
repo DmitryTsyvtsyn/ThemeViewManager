@@ -2,7 +2,7 @@ package ru.freeit.themeviewmanager.theming.colors
 
 import ru.freeit.themeviewmanager.theming.CoreColors
 
-class Colors(
+data class Colors(
     private val primaryColor: Int,
     private val primaryDarkColor: Int,
     private val primaryBackgroundColor: Int,

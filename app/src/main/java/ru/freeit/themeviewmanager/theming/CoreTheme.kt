@@ -5,7 +5,7 @@ import ru.freeit.themeviewmanager.theming.shape.ShapeDrawableStrategy
 import ru.freeit.themeviewmanager.theming.shape.Shapes
 import ru.freeit.themeviewmanager.theming.typeface.Typefaces
 
-enum class CoreTheme(
+sealed class CoreTheme(
     val colors: Colors,
     val typefaces: Typefaces = Typefaces(
         title1 = "sf_pro_rounded_bold.ttf" to 23f,
@@ -14,12 +14,18 @@ enum class CoreTheme(
     ),
     val shapes: Shapes = Shapes(
         button = ShapeDrawableStrategy.Rounded(8f, 8f, 8f, 8f),
-        radioButton = ShapeDrawableStrategy.StrokeRounded(4, 12f, 12f, 12f, 12f)
+        radioButton = ShapeDrawableStrategy.StrokeRounded(2, 12f, 12f, 12f, 12f)
     )
 ) {
 
-    LIGHT(
-        colors = Colors(
+    abstract fun custom(
+        newColors: Colors = colors,
+        newTypefaces: Typefaces = typefaces,
+        newShapes: Shapes = shapes
+    ) : CoreTheme
+
+    class Light(
+        colors: Colors = Colors(
             primaryColor = CoreColors.greenMedium,
             primaryDarkColor = CoreColors.greenDark,
             primaryBackgroundColor = CoreColors.white,
@@ -28,18 +34,30 @@ enum class CoreTheme(
             disabledTextColor = CoreColors.grayMedium,
             disabledBackgroundColor = CoreColors.grayLight
         )
-    ),
+    ) : CoreTheme(colors = colors) {
+        override fun custom(
+            newColors: Colors,
+            newTypefaces: Typefaces,
+            newShapes: Shapes
+        ): CoreTheme = Light(colors = newColors)
+    }
 
-    DARK(
-        colors = Colors(
+    class Dark(
+        colors: Colors = Colors(
             primaryColor = CoreColors.greenMedium,
             primaryDarkColor = CoreColors.greenDark,
             primaryBackgroundColor = CoreColors.black,
             primaryTextColor = CoreColors.white,
             colorOnPrimary = CoreColors.white,
-            disabledTextColor = CoreColors.grayLight,
-            disabledBackgroundColor = CoreColors.grayMedium
+            disabledTextColor = CoreColors.grayMedium,
+            disabledBackgroundColor = CoreColors.grayLight
         )
-    )
+    ) : CoreTheme(colors = colors) {
+        override fun custom(
+            newColors: Colors,
+            newTypefaces: Typefaces,
+            newShapes: Shapes
+        ): CoreTheme = Dark(colors = newColors)
+    }
 
 }

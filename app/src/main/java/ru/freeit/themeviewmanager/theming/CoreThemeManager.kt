@@ -9,7 +9,7 @@ class CoreThemeManager(private val assetManager: AssetManager) {
 
     private val cachedTypefaces = hashMapOf<String, Typeface>()
 
-    private var currentTheme = CoreTheme.LIGHT
+    private var currentTheme: CoreTheme = CoreTheme.Light()
 
     val selected_theme: CoreTheme
         get() = currentTheme
@@ -24,7 +24,12 @@ class CoreThemeManager(private val assetManager: AssetManager) {
     }
 
     fun toggleTheme() {
-        currentTheme = if (currentTheme == CoreTheme.LIGHT) CoreTheme.DARK else CoreTheme.LIGHT
+        currentTheme = if (currentTheme is CoreTheme.Light) CoreTheme.Dark() else CoreTheme.Light()
+        listeners.forEach { listener -> listener.invoke(currentTheme) }
+    }
+
+    fun changeTheme(newTheme: CoreTheme) {
+        currentTheme = newTheme
         listeners.forEach { listener -> listener.invoke(currentTheme) }
     }
 

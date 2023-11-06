@@ -8,7 +8,7 @@ import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
 import ru.freeit.themeviewmanager.theming.colors.ColorAttribute
 import ru.freeit.themeviewmanager.theming.shape.ShapeAttribute
 
-class CoreLinearLayout @JvmOverloads constructor(
+open class CoreLinearLayout @JvmOverloads constructor(
     ctx: Context,
     private val backgroundColor: ColorAttribute = ColorAttribute.PrimaryBackgroundColor,
     private val shape: ShapeAttribute = ShapeAttribute.None
@@ -20,7 +20,7 @@ class CoreLinearLayout @JvmOverloads constructor(
         background = backgroundDrawable
     }
 
-    private val themeManager: CoreThemeManager
+    protected val themeManager: CoreThemeManager
 
     init {
         require(context.applicationContext is CoreThemeManagerProvider) {
