@@ -190,7 +190,9 @@ This trick is quite simple to implement:
 
 You can add as many attributes as you want.
 
-I do not describe all my code, since it is already clear and simple, study and share your knowledge with others!
+I do not describe all my code since it is already clear and simple. 
+
+Study and share your knowledge with others! 
 
 If you have any questions write: [Telegram](https://t.me/rwcwuwr), [Gmail](mailto:dmitry.kind.2@gmail.com)
 
