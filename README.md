@@ -1,9 +1,11 @@
 # ThemeViewManager
 A simple example of an Android app with a custom implementation of View themes.
 
-### Screen record
+### Screen records
 
-[screen_record](https://github.com/evitwilly/ThemeViewManager/assets/40917658/2b9a65ee-76d0-4064-a7f2-c7c591870bc8)
+[screen_record_1](https://github.com/evitwilly/ThemeViewManager/assets/40917658/2b9a65ee-76d0-4064-a7f2-c7c591870bc8)
+
+[screen_record_2](https://github.com/evitwilly/ThemeViewManager/assets/40917658/874d3e10-3b2a-4c31-b7a0-97535d86c9f1)
 
 ### Description
 
@@ -190,7 +192,9 @@ This trick is quite simple to implement:
 
 You can add as many attributes as you want.
 
-I do not describe all my code, since it is already clear and simple, study and share your knowledge with others!
+I do not describe all my code since it is already clear and simple. 
+
+Study and share your knowledge with others! 
 
 If you have any questions write: [Telegram](https://t.me/rwcwuwr), [Gmail](mailto:dmitry.kind.2@gmail.com)
 
