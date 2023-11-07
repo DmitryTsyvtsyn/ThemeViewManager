@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.InsetDrawable
 import androidx.appcompat.widget.AppCompatRadioButton
+import androidx.core.widget.CompoundButtonCompat
 import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.CoreThemeManager
 import ru.freeit.themeviewmanager.theming.CoreThemeManagerProvider
@@ -46,7 +47,7 @@ class CoreRadioButton @JvmOverloads constructor(
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         super.setPadding(0, top, right, bottom)
 
-        val drawable = buttonDrawable
+        val drawable = CompoundButtonCompat.getButtonDrawable(this)
         if (drawable != null) {
             buttonDrawable = InsetDrawable(drawable, left, top, context.dp(textMarginStart), bottom)
             compoundDrawablePadding = 0
