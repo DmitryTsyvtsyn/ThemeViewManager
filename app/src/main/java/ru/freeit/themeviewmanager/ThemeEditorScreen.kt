@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.ScrollView
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.animation.doOnEnd
 import ru.freeit.themeviewmanager.theming.CoreColors
+import ru.freeit.themeviewmanager.theming.CoreTheme
 import ru.freeit.themeviewmanager.theming.colors.ColorAttribute
 import ru.freeit.themeviewmanager.theming.extensions.dp
 import ru.freeit.themeviewmanager.theming.extensions.layoutParams
@@ -17,6 +20,7 @@ import ru.freeit.themeviewmanager.theming.extensions.viewGroupLayoutParams
 import ru.freeit.themeviewmanager.theming.layout.CoreLinearLayout
 import ru.freeit.themeviewmanager.theming.typeface.TypefaceAttribute
 import ru.freeit.themeviewmanager.theming.views.CoreRadioButton
+import ru.freeit.themeviewmanager.theming.views.CoreSeekBar
 import ru.freeit.themeviewmanager.theming.views.CoreTextView
 import ru.freeit.themeviewmanager.theming.views.CoreToolbarView
 
@@ -90,6 +94,15 @@ class ThemeEditorScreen(
             ))
         }
 
+        contentView.addThemeChangingViewForRange(
+            "Font size factor:",
+            themeManager.selected_theme.typefaces.currentProgress()
+        ) { progress ->
+            val currentTheme = themeManager.selected_theme
+            themeManager.changeTheme(currentTheme.custom(
+                newTypefaces = CoreTheme.defaultTypefaces.scaledByProgress(progress)
+            ))
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -141,6 +154,31 @@ class ThemeEditorScreen(
             valueRadioButtonView.layoutParams(linearLayoutParams().matchWidth().wrapHeight().marginBottom(context.dp(8)))
             selectedValueGroupView.addView(valueRadioButtonView)
         }
+    }
+
+    private fun CoreLinearLayout.addThemeChangingViewForRange(
+        title: String,
+        progress: Int = 0,
+        onValueChangeListener: (Int) -> Unit = {}
+    ) {
+        val titleView = CoreTextView(context, typeface = TypefaceAttribute.Caption1)
+        titleView.layoutParams(linearLayoutParams().matchWidth().wrapHeight().marginTop(context.dp(16)))
+        titleView.text = title
+        addView(titleView)
+
+        val rangeView = CoreSeekBar(context)
+        rangeView.progress = progress
+        rangeView.layoutParams(linearLayoutParams().matchWidth().wrapHeight().marginTop(context.dp(12)))
+        rangeView.setOnSeekBarChangeListener(object: OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    onValueChangeListener.invoke(progress)
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+        addView(rangeView)
     }
 
 }

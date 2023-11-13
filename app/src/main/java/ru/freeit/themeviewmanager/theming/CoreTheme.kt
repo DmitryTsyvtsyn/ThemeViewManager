@@ -7,15 +7,8 @@ import ru.freeit.themeviewmanager.theming.typeface.Typefaces
 
 sealed class CoreTheme(
     val colors: Colors,
-    val typefaces: Typefaces = Typefaces(
-        title1 = "sf_pro_rounded_bold.ttf" to 23f,
-        caption1 = "sf_pro_rounded_medium.ttf" to 17f,
-        body1 = "sf_pro_rounded_regular.ttf" to 17f
-    ),
-    val shapes: Shapes = Shapes(
-        button = ShapeDrawableStrategy.Rounded(8f, 8f, 8f, 8f),
-        radioButton = ShapeDrawableStrategy.StrokeRounded(2, 12f, 12f, 12f, 12f)
-    )
+    val typefaces: Typefaces,
+    val shapes: Shapes
 ) {
 
     abstract fun custom(
@@ -33,13 +26,15 @@ sealed class CoreTheme(
             colorOnPrimary = CoreColors.white,
             disabledTextColor = CoreColors.grayMedium,
             disabledBackgroundColor = CoreColors.grayLight
-        )
-    ) : CoreTheme(colors = colors) {
+        ),
+        typefaces: Typefaces = defaultTypefaces,
+        shapes: Shapes = defaultShapes
+    ) : CoreTheme(colors = colors, typefaces = typefaces, shapes = shapes) {
         override fun custom(
             newColors: Colors,
             newTypefaces: Typefaces,
             newShapes: Shapes
-        ): CoreTheme = Light(colors = newColors)
+        ): CoreTheme = Light(colors = newColors, typefaces = newTypefaces, shapes = newShapes)
     }
 
     class Dark(
@@ -51,13 +46,27 @@ sealed class CoreTheme(
             colorOnPrimary = CoreColors.white,
             disabledTextColor = CoreColors.grayMedium,
             disabledBackgroundColor = CoreColors.grayLight
-        )
-    ) : CoreTheme(colors = colors) {
+        ),
+        typefaces: Typefaces = defaultTypefaces,
+        shapes: Shapes = defaultShapes
+    ) : CoreTheme(colors = colors, typefaces = typefaces, shapes = shapes) {
         override fun custom(
             newColors: Colors,
             newTypefaces: Typefaces,
             newShapes: Shapes
-        ): CoreTheme = Dark(colors = newColors)
+        ): CoreTheme = Dark(colors = newColors, typefaces = newTypefaces, shapes = newShapes)
+    }
+
+    companion object {
+        val defaultTypefaces = Typefaces(
+            title1 = "sf_pro_rounded_bold.ttf" to 23f,
+            caption1 = "sf_pro_rounded_medium.ttf" to 17f,
+            body1 = "sf_pro_rounded_regular.ttf" to 17f
+        )
+        val defaultShapes = Shapes(
+            button = ShapeDrawableStrategy.Rounded(8f, 8f, 8f, 8f),
+            radioButton = ShapeDrawableStrategy.StrokeRounded(2, 12f, 12f, 12f, 12f)
+        )
     }
 
 }
