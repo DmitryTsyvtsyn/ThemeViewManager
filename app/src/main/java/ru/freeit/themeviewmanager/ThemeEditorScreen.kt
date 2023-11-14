@@ -103,6 +103,16 @@ class ThemeEditorScreen(
                 newTypefaces = CoreTheme.defaultTypefaces.scaledByProgress(progress)
             ))
         }
+
+        contentView.addThemeChangingViewForRange(
+            "Rounded corners factor:",
+            themeManager.selected_theme.shapes.currentProgress()
+        ) { progress ->
+            val currentTheme = themeManager.selected_theme
+            themeManager.changeTheme(currentTheme.custom(
+                newShapes = CoreTheme.defaultShapes.scaledByProgress(progress)
+            ))
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
