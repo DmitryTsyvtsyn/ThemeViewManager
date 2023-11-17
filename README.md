@@ -7,6 +7,8 @@ A simple example of an Android app with a custom implementation of View themes.
 
 [screen_record_2](https://github.com/evitwilly/ThemeViewManager/assets/40917658/874d3e10-3b2a-4c31-b7a0-97535d86c9f1)
 
+[screen_record_3](https://github.com/evitwilly/ThemeViewManager/assets/40917658/4249bfa9-bb4c-4856-8164-79fce492564e)
+
 ### Description
 
 This example doesn't contain xml layouts and Jetpack Compose library, only descendants of different View classes (ImageView, TextView, e.t.c).
