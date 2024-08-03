@@ -3,39 +3,46 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 android {
-    namespace = "ru.freeit.themeviewmanager"
-    compileSdk = 33
+    namespace = "io.github.dmitrytsyvtsyn.themeviewmanager"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "ru.freeit.themeviewmanager"
+        applicationId = "io.github.dmitrytsyvtsyn.themeviewmanager"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+
+    packaging {
+        resources {
+            excludes += "/META-INF/*"
+        }
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
 }
